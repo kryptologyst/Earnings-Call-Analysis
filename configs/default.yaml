@@ -1,0 +1,46 @@
+# Default configuration for earnings call analysis
+
+model:
+  sentiment_model: "finbert"  # Options: finbert, textblob
+  topic_model: "lda"  # Options: lda, bert_clustering, tfidf_lda
+  num_topics: 10
+  max_length: 512
+  batch_size: 16
+
+data:
+  min_transcript_length: 100
+  max_transcript_length: 10000
+  language: "en"
+  preprocessing:
+    remove_speaker_labels: true
+    remove_timestamps: true
+    remove_page_numbers: true
+
+evaluation:
+  cv_folds: 5
+  test_size: 0.2
+  random_state: 42
+  metrics:
+    sentiment:
+      - accuracy
+      - f1_score
+      - precision
+      - recall
+    topics:
+      - coherence_score
+      - perplexity
+    phrases:
+      - precision
+      - recall
+      - f1_score
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: null  # Set to file path to enable file logging
+
+output:
+  save_results: true
+  results_dir: "assets/results"
+  plots_dir: "assets/plots"
+  format: "json"  # Options: json, csv, parquet
